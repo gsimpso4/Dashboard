@@ -1,10 +1,10 @@
 
 library(shiny)
+library(shinyapps)
+library(shinythemes)
 library(lubridate)
 library(dplyr)
 library(ggplot2)
-
-
 
 options(stringsAsFactors=F)  
 
@@ -17,18 +17,18 @@ shinyServer(function(input, output) {
   dataInput <- reactive({
     allTrips %>%
       filter(Date >= as.POSIXct(input$dates[1]) &
-          Date <= as.POSIXct(input$dates[2])) %>% 
-      select(Date, matches(input$symb)) %>%   #, weekNum
-      group_by(Date) %>%
-      summarise(count = n())
+          Date <= as.POSIXct(input$dates[2])) %>%   
+      select(Date, matches(input$symb), BikeUserType.Id) %>%   #, weekNum
+      group_by(Date, BikeUserType.Id) %>%
+      summarise(count = n(), dur = mean(Billable.Duration)/60)
   })
   
   output$plot <- renderPlot({    
-    ggplot(dataInput(), aes(x = Date, y = count )) +
-      geom_point() +
+    ggplot(dataInput(), aes(x = Date, y = dur )) +
+      geom_point(aes(colour = BikeUserType.Id)) +
       theme() + 
       xlab("Date") + 
-      ylab("Trips") +
+      ylab(input$symb) +
       ggtitle("Time Series")
     
   })
