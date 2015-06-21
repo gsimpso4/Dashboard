@@ -1,10 +1,19 @@
 library(lubridate)
 
-shinyUI(navbarPage("London's Santander Cycle Dashboard",  theme = "united.css", 
+shinyUI(navbarPage("Santander Cycle Analytics Dashboard",  theme = "united.css", 
                    tabPanel("Overview", 
                             h2("In Development!"), h2("")),
+                   navbarMenu("Business Dynamics",
+                              tabPanel("Central Dynamic",
+                                       p("The business must carefully manage two strategic resources: customers and stations."),
+                                       p("Customers must be acquired faster than they are lost,"),
+                                       p("and they must visit stations frequently enough to cover costs"),
+                                       img(src = "CoreSchemeDynamic.png")
+                                        ),
+                              tabPanel("Customer Development")
+                              ),
                    navbarMenu("Metrics",
-                              tabPanel("Trip Metrics",
+                              tabPanel("Usage",
                                        selectInput("plotInterval","Select Horizontal Axis", c("Date", "weekNum")
                                                    , selected  = "Date"),
                                        selectInput("symb", "Select a data variable ", c("Billable.Duration", "count")),
@@ -15,28 +24,30 @@ shinyUI(navbarPage("London's Santander Cycle Dashboard",  theme = "united.css",
                                                       ),
                                        plotOutput("plot")
                                       ),
-                              tabPanel("Member Metrics"
+                              tabPanel("Member"
+                                      ),
+                              tabPanel("Service"
                                       )
                               ),
+                   navbarMenu("Customer Insight",
+                              tabPanel("Demand Drivers"),
+                              tabPanel("...")
+                             ), 
                    navbarMenu("Forecasting",
-                              tabPanel("Demand"),
+                              tabPanel("Demand", 
+                                       h4("Number of trips and duration vs weather etc.")
+                                      ),
                               tabPanel("Availability")
                               ), 
                    navbarMenu("Managing Availability",
                               tabPanel("..."),
                               tabPanel("...")
-                   ), 
-                   navbarMenu("Customer Insight",
-                              tabPanel("Drivers of Demand"),
-                              tabPanel("...")
-                   ), 
+                             ), 
                    navbarMenu("Scheme Design",
                               tabPanel("Station Density"),
-                              tabPanel("...")
+                              tabPanel("Expansion"),
+                              tabPanel("Intensification")
                    ), 
-                   navbarMenu("Strategy Dynamics",
-                              tabPanel("Central Dynamic"),
-                              tabPanel("Customer Development")
-                   ), 
+ 
                    tabPanel("About")
 ))
